@@ -29,6 +29,19 @@ namespace AuctionApi.Controllers
             string token = _accountService.GetJwt(dto);
             return Ok(token);
         }
+
+        [HttpGet]
+        public ActionResult<List<UserDto>> GetAll()
+        {
+            var usersDto = _accountService.GetAll();
+            return Ok(usersDto);
+        }
+        [HttpGet("{id}")]
+        public ActionResult<UserDto> GetById([FromRoute]int id)
+        {
+            var userDto = _accountService.GetById(id);
+            return Ok(userDto);
+        }
         
     }
 }

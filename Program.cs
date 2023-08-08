@@ -61,9 +61,9 @@ namespace AuctionApi
             var scope = app.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetService<AuctionDbContext>();
 
-            var users = dbContext.Users.Where(u => u.Email == "test@test.pl" && (u.LastName == "Dang" || u.LastName == null));
-            dbContext.RemoveRange(users);
-            dbContext.SaveChanges();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -75,14 +75,11 @@ namespace AuctionApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auction API"));
             }
-
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
-            app.UseAuthentication();
 
             app.MapControllers();
 

@@ -2,7 +2,7 @@
 
 namespace AuctionApi.MappingServices
 {
-<<<<<<< HEAD
+
     public class AuctionServiceMapper
     {
         private readonly AuctionDbContext _context;
@@ -10,10 +10,7 @@ namespace AuctionApi.MappingServices
         {
             _context = context;
         }
-=======
-    public class RestaurantServiceMapper
-    {
->>>>>>> b96c9497c06ca39c3e049f6e4c693ca4715fb2ea
+
         public static AuctionDto MapToAuctionDto(Auction auction)
         {
             return new AuctionDto()
@@ -26,7 +23,7 @@ namespace AuctionApi.MappingServices
                 Category = auction.Category.Name
             };
         }
-<<<<<<< HEAD
+
 
         public static Auction MapToAuction(CreateAuctionDto dto)
         {
@@ -40,8 +37,7 @@ namespace AuctionApi.MappingServices
                 CreatedDate = dto.CreatedDate
             };
             return auction;
+
         }
-=======
->>>>>>> b96c9497c06ca39c3e049f6e4c693ca4715fb2ea
     }
 }

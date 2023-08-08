@@ -45,6 +45,7 @@ namespace AuctionApi.Controllers
             _auctionService.Create(dto);
             return NoContent();
         }
+        
 
     }
 }

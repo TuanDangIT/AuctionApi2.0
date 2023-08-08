@@ -15,12 +15,21 @@ namespace AuctionApi.Middleware
             {
                 await next.Invoke(context);
             }
-            catch(BadRequestException badRequestException)
+            catch (ForbidException forbidException)
+            {
+                context.Response.StatusCode = 403;
+            }
+            catch (BadRequestException badRequestException)
             {
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(badRequestException.Message);
             }
-            catch(Exception)
+            catch (NotFoundException notFoundException)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(notFoundException.Message);
+            }
+            catch (Exception e)
             {
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsync("Something went wrong");

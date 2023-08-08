@@ -38,7 +38,8 @@ namespace AuctionApi.Services
                 throw new BadRequestException("Invalid username or password");
             }
 
-            if(_passwordHasher.VerifyHashedPassword(user, user.Password, dto.Password) == PasswordVerificationResult.Failed)
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, dto.Password);
+            if (result == PasswordVerificationResult.Failed)
             {
                 throw new BadRequestException("Invalid username or password");
             }
@@ -65,6 +66,29 @@ namespace AuctionApi.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
             
         }
+        public List<UserDto> GetAll()
+        {
+            var users = _context.Users
+                .Include(u => u.Auctions)
+                .ToList();
+            List<UserDto> usersDto = new List<UserDto>();
+            users.ForEach(user =>
+            {
+                usersDto.Add(UserServiceMapper.MapToUserDto(user));
+            });
+            return usersDto;
+        }
+        public UserDto GetById(int id)
+        {
+            var user = _context.Users
+                .Include(u => u.Auctions)
+                .FirstOrDefault(u => u.Id == id);
+            if (user == null) throw new NotFoundException("User not found");
+            var userDto = UserServiceMapper.MapToUserDto(user);
+            return userDto;
+        }
+
+         
 
     }
 }
