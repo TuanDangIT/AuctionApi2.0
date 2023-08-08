@@ -60,7 +60,7 @@ namespace AuctionApi
             var app = builder.Build();
             var scope = app.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetService<AuctionDbContext>();
-
+            //Middlewares
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
 
