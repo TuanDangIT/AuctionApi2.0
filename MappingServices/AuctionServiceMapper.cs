@@ -11,7 +11,7 @@ namespace AuctionApi.MappingServices
             _context = context;
         }
 
-        public static AuctionDto MapToAuctionDto(Auction auction)
+        public static AuctionDto AuctionMapToAuctionDto(Auction auction)
         {
             return new AuctionDto()
             {
@@ -25,16 +25,16 @@ namespace AuctionApi.MappingServices
         }
 
 
-        public static Auction MapToAuction(CreateAuctionDto dto)
+        public static Auction CreateAuctionDtoMapToAuction(CreateAuctionDto createDto)
         {
             var auction = new Auction()
             {
-                Title = dto.Title,
-                Price = dto.Price,
-                Description = dto.Description,
-                CategoryId = dto.CategoryId,
-                UserId = dto.UserId,
-                CreatedDate = dto.CreatedDate
+                Title = createDto.Title,
+                Price = createDto.Price,
+                Description = createDto.Description,
+                CategoryId = createDto.CategoryId,
+                UserId = createDto.UserId,
+                CreatedDate = createDto.CreatedDate
             };
             return auction;
 

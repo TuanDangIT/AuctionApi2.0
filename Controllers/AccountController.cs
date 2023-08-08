@@ -42,6 +42,12 @@ namespace AuctionApi.Controllers
             var userDto = _accountService.GetById(id);
             return Ok(userDto);
         }
+        [HttpPut("{id}")]
+        public ActionResult UpdateById([FromRoute]int id, [FromBody]UpdateUserDto dto)
+        {
+            _accountService.UpdateUser(id, dto);
+            return NoContent();
+        }
         
     }
 }

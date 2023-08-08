@@ -5,7 +5,7 @@ namespace AuctionApi.MappingServices
 {
     public class UserServiceMapper
     {
-        public static User MapToUser(RegisterUserDto userDto)
+        public static User RegisterDtoMapToUser(RegisterUserDto userDto)
         {
             var newUser = new User()
             {
@@ -19,7 +19,7 @@ namespace AuctionApi.MappingServices
             return newUser;
         }
 
-        public static UserDto MapToUserDto(User user)
+        public static UserDto UserMapToUserDto(User user)
         {
             var auctions = user.Auctions;
             var auctionTitleList = new List<string>();
@@ -37,5 +37,7 @@ namespace AuctionApi.MappingServices
             };
             return newUserDto;
         }
+
+
     }
 }

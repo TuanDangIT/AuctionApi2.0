@@ -19,7 +19,7 @@ namespace AuctionApi.Services
                 .Include(a => a.Category)
                 .ToList();
             List<AuctionDto> auctionsDto = new List<AuctionDto>();
-            auctions.ForEach(auction => auctionsDto.Add(AuctionServiceMapper.MapToAuctionDto(auction)));
+            auctions.ForEach(auction => auctionsDto.Add(AuctionServiceMapper.AuctionMapToAuctionDto(auction)));
             return auctionsDto;
         }
 
@@ -30,7 +30,7 @@ namespace AuctionApi.Services
                 .Include(a => a.Category)
                 .FirstOrDefault(a => a.Id == id);
             AuctionNotFoundExceptionChecker(auction);
-            var auctionDto = AuctionServiceMapper.MapToAuctionDto(auction);
+            var auctionDto = AuctionServiceMapper.AuctionMapToAuctionDto(auction);
 
             return auctionDto;
         }
@@ -65,10 +65,11 @@ namespace AuctionApi.Services
         }
         public void Create(CreateAuctionDto dto)
         {
-            var auction = AuctionServiceMapper.MapToAuction(dto);
+            var auction = AuctionServiceMapper.CreateAuctionDtoMapToAuction(dto);
             _context.Auctions.Add(auction);
             _context.SaveChanges();
         }
+       
         private void AuctionNotFoundExceptionChecker(Auction? auction)
         {
             if(auction == null)
@@ -76,6 +77,7 @@ namespace AuctionApi.Services
                 throw new NotFoundException("Auction not found");
             }
         }
+
 
     }
 }

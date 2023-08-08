@@ -8,6 +8,6 @@ namespace AuctionApi.Services.Interfaces
         string GetJwt(LoginDto dto);
         List<UserDto> GetAll();
         UserDto GetById(int id);
-
+        void UpdateUser(int id, UpdateUserDto dto);
     }
 }

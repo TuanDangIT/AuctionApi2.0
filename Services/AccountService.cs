@@ -21,7 +21,7 @@ namespace AuctionApi.Services
         }
         public void RegisterUser(RegisterUserDto dto)
         {
-            var newUser = UserServiceMapper.MapToUser(dto);
+            var newUser = UserServiceMapper.RegisterDtoMapToUser(dto);
             newUser.Password = _passwordHasher.HashPassword(newUser, dto.Password);
             _context.Users.Add(newUser);
             _context.SaveChanges();
@@ -74,7 +74,7 @@ namespace AuctionApi.Services
             List<UserDto> usersDto = new List<UserDto>();
             users.ForEach(user =>
             {
-                usersDto.Add(UserServiceMapper.MapToUserDto(user));
+                usersDto.Add(UserServiceMapper.UserMapToUserDto(user));
             });
             return usersDto;
         }
@@ -84,11 +84,20 @@ namespace AuctionApi.Services
                 .Include(u => u.Auctions)
                 .FirstOrDefault(u => u.Id == id);
             if (user == null) throw new NotFoundException("User not found");
-            var userDto = UserServiceMapper.MapToUserDto(user);
+            var userDto = UserServiceMapper.UserMapToUserDto(user);
             return userDto;
         }
 
-         
+        public void UpdateUser(int id,UpdateUserDto dto)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null) throw new NotFoundException("User not found");
+            if (dto.FirstName != null) user.FirstName = dto.FirstName;
+            if (dto.LastName != null) user.LastName = dto.LastName;
+            if (dto.Email != null) user.Email = dto.Email;
+            if (dto.Password != null) user.Password = _passwordHasher.HashPassword(user, dto.Password);
+            _context.SaveChanges();
+        }
 
     }
 }

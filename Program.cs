@@ -53,6 +53,7 @@ namespace AuctionApi
             builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterDtoValidator>();
             builder.Services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();
             builder.Services.AddScoped<IValidator<CreateAuctionDto>, CreateAuctionDtoValidator>();
+            builder.Services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
