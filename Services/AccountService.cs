@@ -99,5 +99,13 @@ namespace AuctionApi.Services
             _context.SaveChanges();
         }
 
+        public void DeleteUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null) throw new NotFoundException("User not found");
+            _context.Remove(user);
+            _context.SaveChanges();
+        }
+
     }
 }

@@ -48,6 +48,11 @@ namespace AuctionApi.Controllers
             _accountService.UpdateUser(id, dto);
             return NoContent();
         }
-        
+        [HttpDelete("{id}")]
+        public ActionResult DeleteById([FromRoute]int id)
+        {
+            _accountService.DeleteUser(id);
+            return NoContent();
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace AuctionApi.Services.Interfaces
         List<UserDto> GetAll();
         UserDto GetById(int id);
         void UpdateUser(int id, UpdateUserDto dto);
+        void DeleteUser(int id);
     }
 }

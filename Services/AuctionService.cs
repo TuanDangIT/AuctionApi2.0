@@ -69,6 +69,7 @@ namespace AuctionApi.Services
             _context.Auctions.Add(auction);
             _context.SaveChanges();
         }
+        
        
         private void AuctionNotFoundExceptionChecker(Auction? auction)
         {
