@@ -33,7 +33,6 @@ namespace AuctionApi.MappingServices
                 Price = createDto.Price,
                 Description = createDto.Description,
                 CategoryId = createDto.CategoryId,
-                UserId = createDto.UserId,
                 CreatedDate = createDto.CreatedDate
             };
             return auction;

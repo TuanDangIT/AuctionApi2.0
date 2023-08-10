@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using AuctionApi.Middleware;
+using AuctionApi.Authorization;
 
 namespace AuctionApi
 {
@@ -49,6 +50,9 @@ namespace AuctionApi
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IAuctionService, AuctionService>();
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
+            builder.Services.AddScoped<IUserContextService, UserContextService>();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
             //Validators:
             builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterDtoValidator>();
             builder.Services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();

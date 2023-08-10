@@ -1,15 +1,22 @@
-﻿using AuctionApi.MappingServices;
+﻿using AuctionApi.Authorization;
+using AuctionApi.Enums;
+using AuctionApi.MappingServices;
 using AuctionApi.Models;
 using AuctionApi.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuctionApi.Services
 {
     public class AuctionService : IAuctionService
     {
         private readonly AuctionDbContext _context;
-        public AuctionService(AuctionDbContext context)
+        private readonly IUserContextService _userContextService;
+        private readonly IAuthorizationService _authorizationService;
+        public AuctionService(AuctionDbContext context, IUserContextService userContextService, IAuthorizationService authorizationService)
         {
             _context = context;
+            _userContextService = userContextService;
+            _authorizationService = authorizationService;
         }
 
         public List<AuctionDto> GetAll()
@@ -30,6 +37,11 @@ namespace AuctionApi.Services
                 .Include(a => a.Category)
                 .FirstOrDefault(a => a.Id == id);
             AuctionNotFoundExceptionChecker(auction);
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, auction, new ResourceOperationRequirement(ResourceOperation.Read)).Result;
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException("Access forbidden");
+            }
             var auctionDto = AuctionServiceMapper.AuctionMapToAuctionDto(auction);
 
             return auctionDto;
@@ -66,6 +78,7 @@ namespace AuctionApi.Services
         public void Create(CreateAuctionDto dto)
         {
             var auction = AuctionServiceMapper.CreateAuctionDtoMapToAuction(dto);
+            auction.UserId = _userContextService.GetUserId;
             _context.Auctions.Add(auction);
             _context.SaveChanges();
         }
