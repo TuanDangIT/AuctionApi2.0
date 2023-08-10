@@ -1,5 +1,6 @@
 ﻿using AuctionApi.Models;
 using AuctionApi.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuctionApi.Controllers
 {
@@ -21,6 +22,7 @@ namespace AuctionApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<AuctionDto> GetById([FromRoute] int id)
         {
             var auction = _auctionService.GetById(id);

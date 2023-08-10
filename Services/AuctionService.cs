@@ -37,7 +37,7 @@ namespace AuctionApi.Services
                 .Include(a => a.Category)
                 .FirstOrDefault(a => a.Id == id);
             AuctionNotFoundExceptionChecker(auction);
-            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, auction, new ResourceOperationRequirement(ResourceOperation.Read)).Result;
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, auction, new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
             if (!authorizationResult.Succeeded)
             {
                 throw new ForbidException("Access forbidden");

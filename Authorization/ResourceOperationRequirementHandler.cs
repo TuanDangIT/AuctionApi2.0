@@ -14,7 +14,7 @@ namespace AuctionApi.Authorization
             }
 
             var userId = int.Parse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            if(resource.Id == userId)
+            if(resource.UserId == userId)
             {
                 context.Succeed(requirement);
             }

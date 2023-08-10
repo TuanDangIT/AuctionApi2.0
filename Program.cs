@@ -43,7 +43,7 @@ namespace AuctionApi
                 };
             }
             );
-
+            builder.Services.AddAuthorization();
 
             //DI Services:
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
