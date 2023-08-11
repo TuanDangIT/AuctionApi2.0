@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using AuctionApi.Middleware;
 using AuctionApi.Authorization;
+using NLog.Web;
 
 namespace AuctionApi
 {
@@ -61,6 +62,9 @@ namespace AuctionApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Logging.ClearProviders();
+            builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+            builder.Host.UseNLog();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
