@@ -6,7 +6,7 @@
 
 <h3>User:</h3>
 
-- register new user
+- register a new user
 
 - log in
   
@@ -14,7 +14,7 @@
   
 - get all users
   
-- update a user details by id
+- update user's details by id
   
 - delete by id
   
