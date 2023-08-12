@@ -6,16 +6,25 @@
 
 <h3>User:</h3>
 - register new user
+
 - log in
+  
 - get a user by id
+  
 - get all users
+  
 - update a user details by id
+  
 - delete by id
+  
 
 <h3>Auction:</h3>
 - get an auction by id
+
 - get all auctions
-- delete 
+
+- delete
+  
 - update
 
 <h3>SwaggerUI:</h3>
