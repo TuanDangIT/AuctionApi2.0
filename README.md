@@ -14,7 +14,7 @@
   
 - get all users
   
-- update user's details by id
+- update user details by id
   
 - delete by id
   
