@@ -30,3 +30,5 @@
 <h3>SwaggerUI:</h3>
 ![image](https://github.com/TuanDangIT/AuctionApi2.0/assets/128043070/d0abf612-3832-48cd-a217-ce5217092547)
 
+* This is the first list item.
+* Here's the second list item.
