@@ -7,7 +7,7 @@ namespace AuctionApi.Services.Interfaces
         void RegisterUser(RegisterUserDto dto);
         string GetJwt(LoginDto dto);
         List<UserDto> GetAll();
-        UserDto GetById(int id);
+        UserDto GetUser(int id);
         void UpdateUser(int id, UpdateUserDto dto);
         void DeleteUser(int id);
     }

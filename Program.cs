@@ -53,7 +53,8 @@ namespace AuctionApi
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
             builder.Services.AddScoped<IUserContextService, UserContextService>();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+            builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler<Auction>>();
+            builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler<User>>();
             //Validators:
             builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterDtoValidator>();
             builder.Services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();

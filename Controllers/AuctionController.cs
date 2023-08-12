@@ -22,23 +22,22 @@ namespace AuctionApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public ActionResult<AuctionDto> GetById([FromRoute] int id)
         {
-            var auction = _auctionService.GetById(id);
+            var auction = _auctionService.GetAuction(id);
             return Ok(auction);
         }
 
         [HttpDelete("{id}")]
         public ActionResult DeleteById([FromRoute] int id)
         {
-            _auctionService.DeleteById(id);
+            _auctionService.DeleteAuction(id);
             return NoContent();
         }
         [HttpPut("{id}")]
         public ActionResult UpdateById([FromRoute] int id, [FromBody]UpdateAuctionDto dto)
         {
-            _auctionService.UpdateById(id, dto);
+            _auctionService.UpdateAuction(id, dto);
             return NoContent();
         }
         [HttpPost]

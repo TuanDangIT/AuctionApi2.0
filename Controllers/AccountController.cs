@@ -2,6 +2,7 @@
 using AuctionApi.Services;
 using AuctionApi.Services.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionApi.Controllers
@@ -39,16 +40,18 @@ namespace AuctionApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<UserDto> GetById([FromRoute]int id)
         {
-            var userDto = _accountService.GetById(id);
+            var userDto = _accountService.GetUser(id);
             return Ok(userDto);
         }
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult UpdateById([FromRoute]int id, [FromBody]UpdateUserDto dto)
         {
             _accountService.UpdateUser(id, dto);
             return NoContent();
         }
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult DeleteById([FromRoute]int id)
         {
             _accountService.DeleteUser(id);

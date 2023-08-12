@@ -3,7 +3,9 @@ using AuctionApi.Enums;
 using AuctionApi.MappingServices;
 using AuctionApi.Models;
 using AuctionApi.Services.Interfaces;
+using AuctionApi.Services.Utils;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AuctionApi.Services
 {
@@ -30,39 +32,36 @@ namespace AuctionApi.Services
             return auctionsDto;
         }
 
-        public AuctionDto GetById(int id)
+        public AuctionDto GetAuction(int id)
         {
             var auction = _context.Auctions
                 .Include(a => a.User)
                 .Include(a => a.Category)
                 .FirstOrDefault(a => a.Id == id);
-            AuctionNotFoundExceptionChecker(auction);
-            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, auction, new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
-            if (!authorizationResult.Succeeded)
-            {
-                throw new ForbidException("Access forbidden");
-            }
+            ExceptionsHandler.NotFoundExceptionHandler(auction);
             var auctionDto = AuctionServiceMapper.AuctionMapToAuctionDto(auction);
 
             return auctionDto;
         }
 
-        public void DeleteById(int id)
+        public void DeleteAuction(int id)
         {
             var auction = _context.Auctions
                 .FirstOrDefault(a => a.Id == id);
-            AuctionNotFoundExceptionChecker(auction);
+            ExceptionsHandler.NotFoundExceptionHandler(auction);
+            CheckAuthorizationHandler.CheckAuthorization(_userContextService.User, auction, _authorizationService);
             _context.Auctions.Remove(auction);
             _context.SaveChanges();
         }
 
-        public void UpdateById(int id, UpdateAuctionDto dto)
+        public void UpdateAuction(int id, UpdateAuctionDto dto)
         {
             var auction = _context.Auctions
                 .Include(a => a.Category)
                 .FirstOrDefault(a => a.Id == id);
 
-            AuctionNotFoundExceptionChecker(auction);
+            ExceptionsHandler.NotFoundExceptionHandler(auction);
+            CheckAuthorizationHandler.CheckAuthorization(_userContextService.User, auction, _authorizationService);
             if(dto.Title != null) auction.Title = dto.Title;
             if (dto.Description != null) auction.Description = dto.Description;
             if (dto.Price != default) auction.Price = dto.Price;
@@ -82,15 +81,7 @@ namespace AuctionApi.Services
             _context.Auctions.Add(auction);
             _context.SaveChanges();
         }
-        
-       
-        private void AuctionNotFoundExceptionChecker(Auction? auction)
-        {
-            if(auction == null)
-            {
-                throw new NotFoundException("Auction not found");
-            }
-        }
+
 
 
     }

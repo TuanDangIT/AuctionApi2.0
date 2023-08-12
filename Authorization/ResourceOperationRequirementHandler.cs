@@ -4,9 +4,9 @@ using System.Security.Claims;
 
 namespace AuctionApi.Authorization
 {
-    public class ResourceOperationRequirementHandler : AuthorizationHandler<ResourceOperationRequirement, Auction>
+    public class ResourceOperationRequirementHandler<T> : AuthorizationHandler<ResourceOperationRequirement, T>
     { 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResourceOperationRequirement requirement, Auction resource)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResourceOperationRequirement requirement, T resource)
         {
             if(requirement.ReasourceOperation == ResourceOperation.Read || requirement.ReasourceOperation == ResourceOperation.Create)
             {
@@ -14,9 +14,19 @@ namespace AuctionApi.Authorization
             }
 
             var userId = int.Parse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            if(resource.UserId == userId)
+            if(resource is Auction auction)
             {
-                context.Succeed(requirement);
+                if (auction.UserId == userId)
+                {
+                    context.Succeed(requirement);
+                }
+            }
+            if(resource is User user)
+            {
+                if(user.Id == userId)
+                {
+                    context.Succeed(requirement);
+                }
             }
             return Task.CompletedTask;
         }

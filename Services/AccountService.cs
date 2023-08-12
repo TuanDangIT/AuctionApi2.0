@@ -1,6 +1,10 @@
+using AuctionApi.Authorization;
+using AuctionApi.Enums;
 using AuctionApi.MappingServices;
 using AuctionApi.Models;
 using AuctionApi.Services.Interfaces;
+using AuctionApi.Services.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,11 +17,15 @@ namespace AuctionApi.Services
         private readonly AuctionDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
-        public AccountService(AuctionDbContext context, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings)
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContextService;
+        public AccountService(AuctionDbContext context, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings, IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             _context= context;
             _passwordHasher= passwordHasher;
             _authenticationSettings= authenticationSettings;
+            _authorizationService= authorizationService;
+            _userContextService= userContextService;
         }
         public void RegisterUser(RegisterUserDto dto)
         {
@@ -78,12 +86,12 @@ namespace AuctionApi.Services
             });
             return usersDto;
         }
-        public UserDto GetById(int id)
+        public UserDto GetUser(int id)
         {
             var user = _context.Users
                 .Include(u => u.Auctions)
                 .FirstOrDefault(u => u.Id == id);
-            if (user == null) throw new NotFoundException("User not found");
+            ExceptionsHandler.NotFoundExceptionHandler(user);
             var userDto = UserServiceMapper.UserMapToUserDto(user);
             return userDto;
         }
@@ -91,7 +99,8 @@ namespace AuctionApi.Services
         public void UpdateUser(int id,UpdateUserDto dto)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
-            if (user == null) throw new NotFoundException("User not found");
+            ExceptionsHandler.NotFoundExceptionHandler(user);
+            CheckAuthorizationHandler.CheckAuthorization(_userContextService.User, user, _authorizationService);
             if (dto.FirstName != null) user.FirstName = dto.FirstName;
             if (dto.LastName != null) user.LastName = dto.LastName;
             if (dto.Email != null) user.Email = dto.Email;
@@ -102,10 +111,12 @@ namespace AuctionApi.Services
         public void DeleteUser(int id)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
-            if (user == null) throw new NotFoundException("User not found");
+            ExceptionsHandler.NotFoundExceptionHandler(user);
+            CheckAuthorizationHandler.CheckAuthorization(_userContextService.User, user, _authorizationService);
             _context.Remove(user);
             _context.SaveChanges();
         }
+
 
     }
 }
